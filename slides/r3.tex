@@ -95,6 +95,105 @@ let f x =
 
 \section{Modules}
 
+\begin{frame}[fragile]
+\frametitle{Introduction to Modules}
+Modules package related code together, allowing abstraction and code reuse.
+\begin{lstlisting}
+module LinkedList = struct
+  type 'a t = Empty | Cons of 'a * 'a t
+  let empty = Empty
+  let is_empty x = x = Empty
+  let prepend x l = Cons(x, l)
+  let hd = function
+    | Empty -> failwith "Empty" 
+    | Cons (x, _) -> x
+  let tl = function
+    | Empty -> failwith "Empty" 
+    | Cons (_, l) -> l
+end
+\end{lstlisting}
+\pause
+The basic structure of a module declaration is:
+\verb|module <name> : <signature> = <implementation>|
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Modules}
+To access modules:
+\begin{lstlisting}
+let s = LinkedList.empty in
+let s' = LinkedList.prepend 1 s in
+let ans = LinkedList.hd s'
+\end{lstlisting}
+or
+\begin{lstlisting}
+open LinkedList;;
+let s = empty in
+let s' = prepend 1 s in
+let ans = hd s'
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Module Signatures}
+Module signatures are like Java interfaces, hiding the implementation of modules from the user.
+\begin{lstlisting}
+module type List = sig
+  type 'a t
+  val empty : 'a t
+  val is_empty : 'a t -> bool
+  val prepend : 'a -> 'a t -> 'a t
+  val hd : 'a t -> 'a
+  val tl : 'a t -> 'a t
+end
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Encapsulation}
+Only what's in the signature can be accessed outside it.
+\begin{lstlisting}
+module type List = sig
+  type 'a t
+  val empty : 'a t
+  val prepend : 'a -> 'a t -> 'a t
+  val hd : 'a t -> 'a
+  val tl : 'a t -> 'a t
+end
+\end{lstlisting}
+\begin{lstlisting}
+LinkedList.is_empty LinkedList.empty (* error *)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Abstract types}
+Modules package related code together, allowing abstraction and code reuse.
+\begin{lstlisting}
+module type PrioityQueue = sig
+  type priority = int
+  type 'a queue
+  val empty : 'a queue
+  val insert : 
+   'a queue -> priority -> 'a -> 'a queue
+  val remove_top : 'a queue -> 'a queue
+  val extract : 
+   'a queue -> priority * 'a * 'a queue
+end
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Compilation}
+If a program is in p.ml, and there exists a p.mli, then OCaml interprets it as the following:
+\begin{lstlisting}
+module p : sig [p.mli] end = struct
+  [p.ml]
+end
+\end{lstlisting}
+\end{frame}
+
 \section{Priority Queues}
 
 \begin{frame}[fragile]
