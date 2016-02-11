@@ -28,9 +28,8 @@
 }
 
 % Macros.
-\catcode``=\active
-\def`#1`{\texttt{#1}}
 \newcommand{\redx}{{\color{red} \ding{55}}}
+\newcommand{\greencheck}{{\color{green} \ding{51}}}
 
 \begin{document}
 
@@ -128,7 +127,7 @@ let ans = LinkedList.hd s'
 \end{lstlisting}
 or
 \begin{lstlisting}
-open LinkedList;;
+open LinkedList
 let s = empty in
 let s' = prepend 1 s in
 let ans = hd s'
@@ -162,36 +161,46 @@ module type List = sig
   val tl : 'a t -> 'a t
 end
 \end{lstlisting}
-\begin{lstlisting}
-LinkedList.is_empty LinkedList.empty (* error *)
-\end{lstlisting}
+
+Which works? \pause
+\begin{itemize}
+\item \verb|LinkedList.prepend 5 LinkedList.empty| \pause \greencheck \pause
+\item \verb|LinkedList.(hd (prepend 5 empty))| \pause \greencheck \pause
+\item \verb|LinkedList.is_empty LinkedList.empty| \pause \redx
+\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Abstract types}
 Modules package related code together, allowing abstraction and code reuse.
 \begin{lstlisting}
-module type PrioityQueue = sig
-  type priority = int
-  type 'a queue
-  val empty : 'a queue
-  val insert : 
-   'a queue -> priority -> 'a -> 'a queue
-  val remove_top : 'a queue -> 'a queue
-  val extract : 
-   'a queue -> priority * 'a * 'a queue
+module type PrioQ = sig
+  type 'a t
+  val empty : 'a t
+  val insert : 'a t -> float -> 'a -> 'a t
+  val remove : 'a t -> 'a t
+  val peek : 'a t -> 'a
 end
 \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Compilation}
-If a program is in p.ml, and there exists a p.mli, then OCaml interprets it as the following:
+If a program is in \verb|p.ml|, and there exists a \verb|p.mli|, then OCaml interprets it as the following:
 \begin{lstlisting}
-module p : sig [p.mli] end = struct
+module P : sig [p.mli] end = struct
   [p.ml]
 end
 \end{lstlisting}
+
+(\verb|[p.ml]| indicates that the contents of \verb|p.ml| are ``included'' at that location).
+\end{frame}
+
+\begin{frame}
+\frametitle{Modules Demo}
+\begin{center}
+{\huge \smiley{}}
+\end{center}
 \end{frame}
 
 \section{Priority Queues}
