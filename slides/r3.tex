@@ -172,7 +172,7 @@ Which works? \pause
 
 \begin{frame}[fragile]
 \frametitle{Abstract types}
-Modules package related code together, allowing abstraction and code reuse.
+Abstract types allow the a module to use a custom type without exposing it to the user. This queue has a \verb|type 'a queue| that the user cannot access.
 \begin{lstlisting}
 module type PrioQ = sig
   type 'a t
