@@ -65,6 +65,33 @@ type 'a list =
 \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]
+\frametitle{Solving for types}
+\begin{lstlisting}
+let g x =
+  "These are some cool numbers: " ^
+  string_of_float x
+
+let h (a, b) =
+  int_of_float (a +. float_of_string b)
+  
+let f x =
+  g (fst x) ^ string_of_int (h x)
+\end{lstlisting}
+\pause
+
+\begin{itemize}
+\item \verb|g| \pause : \verb|float| $\rightarrow$ \verb|string| \pause
+\item \verb|h| \pause : \verb|float| $\times$ \verb|string| $\rightarrow$ \verb|int| \pause
+\item \verb|f| \pause : $t_1 \times t_2 \rightarrow$ \verb|string| \pause
+\begin{itemize}
+\item $t_1$ \pause : \verb|float| \quad ($g$ : $t_1 \rightarrow$ \verb|string|) \pause
+\item $t_2$ \pause : \verb|string|  \quad ($h$ : \verb|_| $\times t_2 \rightarrow$ \verb|int|) \pause
+\item \verb|f| \pause : \verb|float| $\times$ \verb|string| $\rightarrow$ \verb|string| \pause
+\end{itemize}
+\end{itemize}
+\end{frame}
+
 \section{Modules}
 
 \section{Heaps}
