@@ -114,9 +114,9 @@ A priority queue supports the following operations:
 \textit{Idea}: Implement a priority queue using a binary tree.
 \begin{itemize}
 \item The element at the top of the tree will be the one with the highest priority.
-\item An element's parents will always have higher priority than them (don't know about siblings).
+\item An element's parents will always have higher priority than them (don't know about siblings). \pause
 \item Then in \textsc{Insert}, if the priority of the new element is greater than the element at the top, we put the new element at the top and insert the other into the left or right subtree (recursion!).
-\item If it's less, we insert the new element into the left or right subtree.
+\item If it's less, we insert the new element into the left or right subtree. \pause
 \item \textsc{Remove} has the choice of two elements to replace the top element with. We need to decide based on their relative priorities.
 \end{itemize}
 \end{frame}
@@ -128,19 +128,21 @@ type 'a t =
   | Node of float * 'a * 'a t * 'a t
   | Empty
 \end{lstlisting}
+\pause
 
-Some examples:
+Some examples: \pause
 \begin{itemize}
-\item \verb|Empty|
-\item \verb|Node (111.0, "1110", Empty, Empty)|
+\item \verb|Empty| \pause
+\item \verb|Node (111.0, "1110", Empty, Empty)| \pause
 \item \verb|Node (infinity, "Happiness",| \\
       \verb|  Node (100.0, "Money", Empty, Empty),| \\
       \verb|  Empty)|
 \end{itemize}
+\pause
 
-How would we...
+How would we... \pause
 \begin{itemize}
-\item \textsc{Remove} from both?
+\item \textsc{Remove} from both? \pause
 \item \textsc{Insert} \verb|"3110"| with priority $311.0$ into both?
 \end{itemize}
 \end{frame}
@@ -208,7 +210,6 @@ Our plan was:
 \item If the priority of the new element is greater than the element at the top, we put the new element at the top and insert the other into the left or right subtree (recursion!).
 \item If it's less, we insert the new element into the left or right subtree.
 \end{itemize}
-\pause
 \end{frame}
 
 \begin{frame}[fragile]
@@ -227,6 +228,17 @@ let rec insert q p x =
     if p >= p' then
       Node (p, x, insert r p' x', l)
     else Node (p', x', insert r p x, l)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Implementation: \textsc{Remove}}
+\begin{lstlisting}
+type 'a t =
+  | Node of float * 'a * 'a t * 'a t
+  | Empty
+
+val remove : 'a t -> 'a t
 \end{lstlisting}
 \end{frame}
 
@@ -261,6 +273,13 @@ let rec remove = function
 \item We try to mitigate it by switching which side we \textsc{Insert} on. \pause
 \item Could use a slightly more complicated heap data structure.
 \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Recap}
+\begin{center}
+:)
+\end{center}
 \end{frame}
 
 \begin{frame}
