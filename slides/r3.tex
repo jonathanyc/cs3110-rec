@@ -7,36 +7,61 @@
   \usepackage{graphicx}
   % \toprule, \midrule, \bottomrule
   \usepackage{booktabs}
+  % Symbols.
+  \usepackage{amssymb}
+  \usepackage{pifont}
+  % Colors!
+  \usepackage{color}
+  % Code!
+  \usepackage{listings}
+  \lstset{
+    basicstyle=\ttfamily,
+    mathescape,
+    numbers=left
+  }
 
   \title[Recitation 3]{Recitation 3: Types, Modules, and Heaps }
   \author{Eric Wu, Jonathan Chan}
   \institute[Cornell] { CS 3110 }
+  \date{Feb. 11, 2016}
 }
 
+% Macros.
 \catcode``=\active
 \def`#1`{\texttt{#1}}
-
-\date{Feb. 11, 2016}
+\newcommand{\redx}{{\color{red} \ding{55}}}
 
 \begin{document}
 
 \begin{frame}
-  \titlepage
+\titlepage
 \end{frame}
 
 \begin{frame}
-  \frametitle{Itinerary}
-  \tableofcontents
+\frametitle{Itinerary}
+\tableofcontents
 \end{frame}
 
 \section{Types}
 
-\begin{frame}
+\begin{frame}[fragile]
 \frametitle{Type or type error?}
+
+\begin{lstlisting}
+type 'a list =
+  | Cons of 'a * 'a list
+  | Empty
+\end{lstlisting}
+\pause
+
 \begin{itemize}
-\item `1 + 3` \pause ` : int` \pause
-\item `[1; 2; 3]` \pause ` : int list` \pause
-\item `1 + [1; 2; 3]` \pause Type error! \pause
+\item \verb|1 + 3| \pause : \verb|int| \pause
+\item \verb|[1; 2; 3]| \pause : \verb|int list| \pause
+\item \verb|(42, "the answer")| \pause : \verb|int * string| \pause
+\item \verb|1 + [1; 2; 3]| \pause : \redx \pause
+\item \verb|(42, 7) + (50, 9)| \pause : \redx \pause
+\item \verb|Cons ("Eric", Cons ("Jonathan", Empty))| \pause \\: \verb|string list| \pause
+\item \verb|Cons (7, Cons (false, Empty))| \pause : \redx \pause
 \end{itemize}
 \end{frame}
 
