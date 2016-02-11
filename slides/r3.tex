@@ -1,0 +1,49 @@
+\documentclass{beamer}
+\mode<presentation> {
+  % Beamer theme.
+  \usetheme{default}
+  \usecolortheme{beaver}
+  % Images.
+  \usepackage{graphicx}
+  % \toprule, \midrule, \bottomrule
+  \usepackage{booktabs}
+
+  \title[Recitation 3]{Recitation 3: Types, Modules, and Heaps }
+  \author{Eric Wu, Jonathan Chan}
+  \institute[Cornell] { CS 3110 }
+}
+
+\catcode``=\active
+\def`#1`{\texttt{#1}}
+
+\date{Feb. 11, 2016}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}
+  \frametitle{Itinerary}
+  \tableofcontents
+\end{frame}
+
+\section{Types}
+
+\begin{frame}
+\frametitle{Type or type error?}
+\begin{itemize}
+\item `1 + 3` \pause ` : int` \pause
+\item `[1; 2; 3]` \pause ` : int list` \pause
+\item `1 + [1; 2; 3]` \pause Type error! \pause
+\end{itemize}
+\end{frame}
+
+\section{Modules}
+
+\section{Heaps}
+
+\end{document}
+
+% vim: set expandtab sts=2 sw=2 autoindent :
