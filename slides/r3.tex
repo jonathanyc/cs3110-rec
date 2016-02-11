@@ -49,7 +49,7 @@
 \frametitle{Type or type error?}
 
 \begin{lstlisting}
-type 'a list =
+type 'a best_list =
   | Cons of 'a * 'a list
   | Empty
 \end{lstlisting}
@@ -61,7 +61,7 @@ type 'a list =
 \item \verb|(42, "the answer")| \pause : \verb|int * string| \pause
 \item \verb|1 + [1; 2; 3]| \pause : \redx \pause
 \item \verb|(42, 7) + (50, 9)| \pause : \redx \pause
-\item \verb|Cons ("Eric", Cons ("Jonathan", Empty))| \pause \\: \verb|string list| \pause
+\item \verb|Cons ("Eric", Cons ("Jonathan", Empty))| \pause \\: \verb|string best_list| \pause
 \item \verb|Cons (7, Cons (false, Empty))| \pause : \redx
 \end{itemize}
 \end{frame}
