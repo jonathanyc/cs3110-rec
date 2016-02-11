@@ -95,7 +95,80 @@ let f x =
 \section{Modules}
 
 \section{Priority Queues}
+
+\begin{frame}[fragile]
 \frametitle{Introduction to Priority Queues}
+A priority queue is an \textit{abstract data type} that stores values and their priorities.
+We'll use \verb|float|s for priorities here and let bigger floats be higher priorities, but this is up to you.
+
+A priority queue supports the following operations:
+\begin{itemize}
+\item \textsc{Insert} : $\alpha$ \verb|PrioQ.t| $\rightarrow$ \verb|float| $\rightarrow \alpha \rightarrow$ \verb|PrioQ.t|
+\item \textsc{Peek} : $\alpha$ \verb|PrioQ.t| $\rightarrow \alpha$
+\item \textsc{Remove} : $\alpha$ \verb|PrioQ.t| $\rightarrow \alpha$ \verb|PrioQ.t|
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Implementation: Idea}
+\textit{Idea}: Implement a priority queue using a binary tree.
+\begin{itemize}
+\item The element at the top of the tree will be the one with the highest priority.
+\item An element's parents will always have higher priority than them (don't know about siblings).
+\item Then in \textsc{Insert}, if the priority of the new element is greater than the element at the top, we put the new element at the top and insert the other into the left or right subtree (recursion!).
+\item If it's less, we insert the new element into the left or right subtree.
+\item \textsc{Remove} has the choice of two elements to replace the top element with. We need to decide based on their relative priorities.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Implementation: Data Type}
+\begin{lstlisting}
+type 'a t =
+  | Node of float * 'a * 'a t * 'a t
+  | Empty
+\end{lstlisting}
+
+Some examples:
+\begin{itemize}
+\item \verb|Empty|
+\item \verb|Node (111.0, "1110", Empty, Empty)|
+\item \verb|Node (infinity, "Happiness",| \\
+      \verb|  Node (100.0, "Money", Empty, Empty),| \\
+      \verb|  Empty)|
+\end{itemize}
+
+How would we...
+\begin{itemize}
+\item \textsc{Remove} from both?
+\item \textsc{Insert} \verb|"3110"| with priority $311.0$ into both?
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Implementation: Peek}
+\begin{lstlisting}
+type 'a t =
+  | Node of float * 'a * 'a t * 'a t
+  | Empty
+\end{lstlisting}
+\textsc{Peek} should remove the element with the highest priority.
+Where is it?
+\pause
+
+\textit{Recall:} 
+"The element at the top of the tree will be the one with the highest priority."
+\pause
+
+\begin{lstlisting}
+let peek = function
+  | Empty -> None
+  | Node (_, x, _, _) -> x
+\end{lstlisting}
+\end{frame}
+
+\pause
+How fast is \textsc{Peek} relative to the size of the tree?
 
 \end{document}
 
