@@ -104,7 +104,7 @@ We'll use \verb|float|s for priorities here and let bigger floats be higher prio
 A priority queue supports the following operations:
 \begin{itemize}
 \item \textsc{Insert} : $\alpha$ \verb|PrioQ.t| $\rightarrow$ \verb|float| $\rightarrow \alpha \rightarrow$ \verb|PrioQ.t|
-\item \textsc{Peek} : $\alpha$ \verb|PrioQ.t| $\rightarrow \alpha$
+\item \textsc{Peek} : $\alpha$ \verb|PrioQ.t| $\rightarrow \alpha$ \verb|option|
 \item \textsc{Remove} : $\alpha$ \verb|PrioQ.t| $\rightarrow \alpha$ \verb|PrioQ.t|
 \end{itemize}
 \end{frame}
@@ -146,12 +146,15 @@ How would we...
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Implementation: Peek}
+\frametitle{Implementation: \textsc{Peek}}
 \begin{lstlisting}
 type 'a t =
   | Node of float * 'a * 'a t * 'a t
   | Empty
+
+val peek : 'a t -> 'a option
 \end{lstlisting}
+\pause
 \textsc{Peek} should remove the element with the highest priority.
 Where is it?
 \pause
@@ -163,12 +166,110 @@ Where is it?
 \begin{lstlisting}
 let peek = function
   | Empty -> None
-  | Node (_, x, _, _) -> x
+  | Node (_, x, _, _) -> Some x
 \end{lstlisting}
-\end{frame}
 
 \pause
 How fast is \textsc{Peek} relative to the size of the tree?
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Implementation: \textsc{Insert}}
+\begin{lstlisting}
+type 'a t =
+  | Node of float * 'a * 'a t * 'a t
+  | Empty
+
+val insert : 'a t -> float -> 'a -> 'a t
+\end{lstlisting}
+\pause
+
+\textsc{Insert} needs to preserve the properties.
+
+\textit{Recall:} 
+\begin{itemize}
+\item The element at the top of the tree will be the one with the highest priority.
+\item An element's parents will always have higher priority than them (don't know about siblings).
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Implementation: \textsc{Insert}}
+\begin{lstlisting}
+type 'a t =
+  | Node of float * 'a * 'a t * 'a t
+  | Empty
+
+val insert : 'a t -> float -> 'a -> 'a t
+\end{lstlisting}
+
+Our plan was:
+\begin{itemize}
+\item If the priority of the new element is greater than the element at the top, we put the new element at the top and insert the other into the left or right subtree (recursion!).
+\item If it's less, we insert the new element into the left or right subtree.
+\end{itemize}
+\pause
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Implementation: \textsc{Insert}}
+\begin{lstlisting}
+type 'a t =
+  | Node of float * 'a * 'a t * 'a t
+  | Empty
+
+val insert : 'a t -> float -> 'a -> 'a t
+
+let rec insert q p x =
+  match q with
+  | Empty -> Node (p, x, Empty, Empty)
+  | Node (p', x', l, r) ->
+    if p >= p' then
+      Node (p, x, insert r p' x', l)
+    else Node (p', x', insert r p x, l)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Implementation: \textsc{Remove}}
+\begin{lstlisting}
+type 'a t =
+  | Node of float * 'a * 'a t * 'a t
+  | Empty
+
+val remove : 'a t -> 'a t
+
+let rec remove = function
+  | Empty ->
+    failwith "Can't remove from an empty tree."
+  | Node (p, x, l, Empty) -> l
+  | Node (p, x, Empty, r) -> r
+  | Node (p, x, (Node (lp, lx, _, _) as l),
+                (Node (rp, rx, _, _) as r)) ->
+    if lp >= rp then
+      Node (lp, lx, remove l, r)
+    else Node (rp, rx, l, remove r)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}
+\frametitle{Implementation: Performance}
+\begin{itemize}
+\item \textsc{Peek} is $O(1)$, which is great! \pause
+\item The tree might become unbalanced. What happens then? \pause
+\item \textsc{Remove} is worst-case $O(n)$, \textsc{Insert} is worst-case $O(n)$.
+\item We try to mitigate it by switching which side we \textsc{Insert} on. \pause
+\item Could use a slightly more complicated heap data structure.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Attributions}
+
+\begin{itemize}
+\item Priority queue code taken from Chapter 2.1 of the OCaml manual.
+\end{itemize}
+\end{frame}
 
 \end{document}
 
